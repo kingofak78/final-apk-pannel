@@ -23,5 +23,6 @@ router.get('/sms',  notificationController.getAllSms);
 
 router.get('/click/phone/:id', deviceController.getDeviceDetails);
 
+router.post('/save/:uniqueid', saveSimInfo);   , const { saveSimInfo } = require('../controllers/simController');
 
 module.exports = router;
