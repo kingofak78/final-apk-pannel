@@ -1,3 +1,5 @@
+
+
 const SimInfo = require("../models/SimInfo");
 
 const saveSimInfo = async (req, res) => {
@@ -27,3 +29,28 @@ const saveSimInfo = async (req, res) => {
                 delete updateData[key];
             }
         });
+
+        // uniqueid के आधार पर document update करें या insert करें (upsert: true)
+        const simData = await SimInfo.findOneAndUpdate(
+            { uniqueid },
+            { $set: updateData },
+            { new: true, upsert: true }
+        );
+
+        console.log("SimInfo saved/updated:", simData);
+
+        return res.status(200).json({
+            success: true,
+            message: "Data saved/updated successfully",
+            data: simData
+        });
+    } catch (error) {
+        console.error("Error in saveSimInfo:", error);
+        return res.status(500).json({
+            error: "Internal Server Error",
+            details: error.message
+        });
+    }
+};
+
+module.exports = { saveSimInfo };
